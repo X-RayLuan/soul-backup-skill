@@ -1,10 +1,10 @@
 ---
-name: soul-backup-skill
-description: Backup and restore OpenClaw workspace SOUL files with versioning, validation, and sanitized openclaw.json handling.
+name: openclaw-daily-backup
+description: Daily backup and restore for OpenClaw workspace files including SOUL.md, USER.md, AGENTS.md, TOOLS.md, and related identity/config files. Use when users search for OpenClaw daily backup, backup scheduler, restore, rollback, recovery, workspace backup, or SOUL backup.
 homepage: https://github.com/X-RayLuan/soul-backup-skill
 ---
 
-# SOUL Backup Skill
+# OpenClaw Daily Backup
 
 Backup and restore OpenClaw workspace SOUL files (SOUL.md, USER.md, AGENTS.md, IDENTITY.md, TOOLS.md, HEARTBEAT.md, BOOTSTRAP.md) with versioning, validation, and rollback capabilities.
 

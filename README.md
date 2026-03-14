@@ -1,6 +1,6 @@
-# SOUL Backup for OpenClaw
+# OpenClaw Daily Backup
 
-**Never lose your agent's memory.** One-click backup and restore for OpenClaw workspace SOUL files.
+**Never lose your agent's memory.** Daily backup and restore for OpenClaw workspace SOUL files.
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Node.js Version](https://img.shields.io/badge/node-%3E%3D18-brightgreen)](https://nodejs.org/)
@@ -31,7 +31,7 @@ SOUL Backup protects your OpenClaw agent's personality, configuration, and memor
 
 ```bash
 cd ~/.openclaw/workspace-YOUR-AGENT
-git clone https://github.com/YOUR-USERNAME/soul-backup.git
+git clone https://github.com/X-RayLuan/soul-backup-skill.git
 cd soul-backup
 chmod +x scripts/*.mjs
 ```
@@ -255,15 +255,15 @@ MIT License — see [LICENSE](LICENSE) for details.
 
 ## Support
 
-- **Issues:** [GitHub Issues](https://github.com/YOUR-USERNAME/soul-backup/issues)
-- **Discussions:** [GitHub Discussions](https://github.com/YOUR-USERNAME/soul-backup/discussions)
-- **OpenClaw Community:** [Discord](https://discord.com/invite/clawd)
+- **Issues:** [GitHub Issues](https://github.com/X-RayLuan/soul-backup-skill/issues)
+- **Repository:** [X-RayLuan/soul-backup-skill](https://github.com/X-RayLuan/soul-backup-skill)
+- **ClawHub:** [openclaw-workspace-backup-restore](https://clawhub.ai/skills/openclaw-workspace-backup-restore)
 
 ---
 
 ## Credits
 
-Built for the OpenClaw community by [Your Name].
+Built for the OpenClaw community.
 
 Inspired by the need for production-grade reliability in AI agent deployments.
 
