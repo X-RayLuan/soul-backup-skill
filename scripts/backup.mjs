@@ -37,7 +37,8 @@ const args = process.argv.slice(2);
 const options = {
   name: null,
   description: null,
-  workspace: DEFAULT_WORKSPACE_ROOT
+  workspace: DEFAULT_WORKSPACE_ROOT,
+  rawOpenClawConfig: false
 };
 
 for (let i = 0; i < args.length; i++) {
@@ -50,6 +51,8 @@ for (let i = 0; i < args.length; i++) {
   } else if (args[i] === '--workspace' && args[i + 1]) {
     options.workspace = path.resolve(args[i + 1]);
     i++;
+  } else if (args[i] === '--raw-openclaw-config') {
+    options.rawOpenClawConfig = true;
   }
 }
 
@@ -210,30 +213,44 @@ async function backup() {
 
   const openclawJsonPath = path.join(OPENCLAW_ROOT, 'openclaw.json');
   if (fs.existsSync(openclawJsonPath)) {
-    const sanitizedContent = sanitizeOpenClawConfig(openclawJsonPath);
-
-    if (sanitizedContent) {
-      const backupRelativePath = 'openclaw.sanitized.json';
-      const destPath = path.join(backupPath, backupRelativePath);
-      fs.writeFileSync(destPath, sanitizedContent);
-
-      const stats = fs.statSync(destPath);
-      const hash = crypto.createHash('sha256').update(sanitizedContent).digest('hex');
-
-      manifest.files[backupRelativePath] = {
-        size: stats.size,
-        hash: `sha256:${hash}`,
-        exists: true,
-        sanitized: true,
-        original: '~/.openclaw/openclaw.json',
-        restoreTo: 'manual'
-      };
-
-      console.log(`✅ Backed up: ~/.openclaw/openclaw.json → openclaw.sanitized.json (${stats.size} bytes, sensitive fields redacted)`);
+    if (options.rawOpenClawConfig) {
+      const size = backupFile({
+        sourcePath: openclawJsonPath,
+        backupRelativePath: 'openclaw.json',
+        manifest,
+        backupPath,
+        restoreTo: 'openclaw_root'
+      });
+      manifest.files['openclaw.json'].raw = true;
+      manifest.files['openclaw.json'].original = '~/.openclaw/openclaw.json';
+      console.log(`✅ Backed up: ~/.openclaw/openclaw.json → openclaw.json (${size} bytes, real config)`);
       backedUpCount++;
     } else {
-      console.log('⚠️  Skipped: ~/.openclaw/openclaw.json (parse error)');
-      skippedCount++;
+      const sanitizedContent = sanitizeOpenClawConfig(openclawJsonPath);
+
+      if (sanitizedContent) {
+        const backupRelativePath = 'openclaw.sanitized.json';
+        const destPath = path.join(backupPath, backupRelativePath);
+        fs.writeFileSync(destPath, sanitizedContent);
+
+        const stats = fs.statSync(destPath);
+        const hash = crypto.createHash('sha256').update(sanitizedContent).digest('hex');
+
+        manifest.files[backupRelativePath] = {
+          size: stats.size,
+          hash: `sha256:${hash}`,
+          exists: true,
+          sanitized: true,
+          original: '~/.openclaw/openclaw.json',
+          restoreTo: 'manual'
+        };
+
+        console.log(`✅ Backed up: ~/.openclaw/openclaw.json → openclaw.sanitized.json (${stats.size} bytes, sensitive fields redacted)`);
+        backedUpCount++;
+      } else {
+        console.log('⚠️  Skipped: ~/.openclaw/openclaw.json (parse error)');
+        skippedCount++;
+      }
     }
   } else {
     console.log('⚠️  Skipped: ~/.openclaw/openclaw.json (not found)');

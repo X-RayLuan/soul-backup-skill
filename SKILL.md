@@ -1,12 +1,11 @@
 ---
-name: openclaw-daily-backup
-description: Daily backup and restore for OpenClaw workspace files including SOUL.md, USER.md, AGENTS.md, TOOLS.md, and related identity/config files. Use when users search for OpenClaw daily backup, backup scheduler, restore, rollback, recovery, workspace backup, or SOUL backup.
-homepage: https://github.com/X-RayLuan/soul-backup-skill
+name: openclaw-backup-restore
+description: Backup, restore, validate, and GitHub-sync OpenClaw workspace state including SOUL.md, USER.md, AGENTS.md, IDENTITY.md, TOOLS.md, HEARTBEAT.md, BOOTSTRAP.md, and optional real openclaw.json backups. Use when users ask for OpenClaw backup, restore, daily backup, off-machine backup, GitHub backup, rollback, recovery, or workspace state protection.
 ---
 
-# OpenClaw Daily Backup
+# OpenClaw Backup Restore
 
-Backup and restore OpenClaw workspace SOUL files (SOUL.md, USER.md, AGENTS.md, IDENTITY.md, TOOLS.md, HEARTBEAT.md, BOOTSTRAP.md) with versioning, validation, and rollback capabilities.
+Backup, restore, validate, and GitHub-sync OpenClaw workspace state (SOUL.md, USER.md, AGENTS.md, IDENTITY.md, TOOLS.md, HEARTBEAT.md, BOOTSTRAP.md, agent markdown files, and optional real `openclaw.json`) with versioning, rollback, and off-machine recovery.
 
 ## Purpose
 
@@ -25,10 +24,10 @@ Core SOUL files from workspace root:
 
 ## Usage
 
-### Backup Current SOUL Files
+### Backup Current Workspace State
 
 ```bash
-# Create timestamped backup
+# Create timestamped backup (sanitized openclaw.json)
 node scripts/backup.mjs
 
 # Create named backup
@@ -36,6 +35,19 @@ node scripts/backup.mjs --name "pre-migration"
 
 # Backup with description
 node scripts/backup.mjs --desc "Before major refactor"
+
+# Include real ~/.openclaw/openclaw.json in the backup set
+node scripts/backup.mjs --raw-openclaw-config
+```
+
+### Daily GitHub Backup
+
+```bash
+# Create backup, commit backups/, and push to current branch
+node scripts/backup-and-push.mjs
+
+# Push sanitized-config-only backup instead of the real config
+node scripts/backup-and-push.mjs --sanitized-config-only
 ```
 
 ### List Backups
